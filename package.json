@@ -1,7 +1,8 @@
 {
   "name": "analytics-academy",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "private": true,
+  "description": "Russian-language Data Analytics learning platform",
   "scripts": {
     "start": "node server.js"
   }

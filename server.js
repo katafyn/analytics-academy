@@ -1,13 +1,16 @@
-const http=require("http"),fs=require("fs"),path=require("path"),url=require("url");
-const root=path.join(__dirname,"public"), db=path.join(__dirname,"data.json");
-if(!fs.existsSync(db)) fs.writeFileSync(db,JSON.stringify({users:{}}));
-function send(res,status,data,type="application/json"){res.writeHead(status,{"Content-Type":type,"Access-Control-Allow-Origin":"*"});res.end(type==="application/json"?JSON.stringify(data):data)}
+const http=require("http"),fs=require("fs"),path=require("path");
+const PORT=process.env.PORT||10000, ROOT=path.join(__dirname,"public"), DB=path.join(__dirname,"data.json");
+let db={}; try{db=JSON.parse(fs.readFileSync(DB,"utf8")||"{}")}catch(e){}
+function send(res,code,data,type="application/json"){res.writeHead(code,{"Content-Type":type,"Access-Control-Allow-Origin":"*"});res.end(type.includes("json")?JSON.stringify(data):data)}
+function save(){fs.writeFileSync(DB,JSON.stringify(db,null,2))}
 const server=http.createServer((req,res)=>{
- const u=url.parse(req.url,true);
- if(req.method==="GET"&&u.pathname==="/api/health") return send(res,200,{ok:true,app:"Analytics Academy"});
- if(req.method==="GET"&&u.pathname==="/api/state"){let d=JSON.parse(fs.readFileSync(db));let id=u.query.user||"demo";return send(res,200,d.users[id]||{name:"Apalon",xp:70,done:[]})}
- if(req.method==="POST"&&u.pathname==="/api/state"){let body="";req.on("data",c=>body+=c);req.on("end",()=>{try{let x=JSON.parse(body),d=JSON.parse(fs.readFileSync(db));d.users[x.user||"demo"]=x.state;fs.writeFileSync(db,JSON.stringify(d,null,2));send(res,200,{ok:true})}catch(e){send(res,400,{ok:false,error:"Invalid JSON"})}});return}
- let file=u.pathname==="/"?"/index.html":u.pathname;let fp=path.normalize(path.join(root,file));if(!fp.startsWith(root))return send(res,403,"Forbidden","text/plain");
- fs.readFile(fp,(e,b)=>{if(e)return send(res,404,"Not found","text/plain");let ext=path.extname(fp);let types={".html":"text/html; charset=utf-8",".css":"text/css",".js":"text/javascript",".json":"application/json"};send(res,200,b,types[ext]||"application/octet-stream")});
+  const u=new URL(req.url,`http://${req.headers.host}`);
+  if(req.method==="OPTIONS"){res.writeHead(204,{"Access-Control-Allow-Origin":"*","Access-Control-Allow-Methods":"GET,POST,OPTIONS","Access-Control-Allow-Headers":"Content-Type"});return res.end()}
+  if(u.pathname==="/api/health")return send(res,200,{ok:true,app:"Analytics Academy",version:"5.0.0"});
+  if(u.pathname==="/api/state"&&req.method==="GET"){return send(res,200,db[u.searchParams.get("user")]||{})}
+  if(u.pathname==="/api/state"&&req.method==="POST"){let body="";req.on("data",c=>body+=c);req.on("end",()=>{try{let x=JSON.parse(body);db[x.user]=x.state;save();send(res,200,{ok:true})}catch(e){send(res,400,{ok:false})}});return}
+  let p=path.normalize(path.join(ROOT,u.pathname==="/"?"index.html":u.pathname));
+  if(!p.startsWith(ROOT))return send(res,403,"Forbidden","text/plain");
+  fs.readFile(p,(err,data)=>{if(err)return send(res,404,"Not found","text/plain");let ext=path.extname(p);let types={".html":"text/html; charset=utf-8",".js":"text/javascript",".css":"text/css",".json":"application/json"};send(res,200,data,types[ext]||"application/octet-stream")});
 });
-server.listen(process.env.PORT||3000,()=>console.log("Analytics Academy running on http://localhost:"+(process.env.PORT||3000)));
+server.listen(PORT,()=>console.log(`Analytics Academy v5 running on port ${PORT}`));

@@ -1,27 +1,25 @@
-# Analytics Academy
+# Analytics Academy v6
 
-Русскоязычная учебная платформа для изучения Data Analytics.
+Финальный учебный контент для русскоязычной платформы Data Analytics.
+
+- 133 уроков с целями, теорией, примерами, типичными ошибками и мини-практикой
+- 500 практических заданий
+- 12 бизнес-проектов с реальными типами полей datasets
+- Excel, SQL, Python, Power BI, Statistics, Data Visualization, Business Analytics
+- Practice Lab, Interview Lab, Portfolio, University Ready
+- XP, достижения, прогресс, профиль и серверная синхронизация
 
 ## Запуск
-Требуется Node.js 18+.
-
-```bash
 npm start
-```
-
-Откройте http://localhost:3000
-
-## Что уже есть
-- Dashboard и roadmap
-- Excel: 12 уроков
-- SQL / Python / Power BI учебные лаборатории
-- Practice Lab
-- Car Sales Analysis с dataset
-- XP, прогресс, достижения, активность
-- Portfolio и University Portfolio
-- AI Tutor UI с подсказками
-- localStorage для демо-прогресса
-- небольшой Node API для серверного хранения состояния
 
 ## Важно
-AI Tutor в этой сборке работает как учебный демонстрационный помощник. Для настоящего LLM нужно подключить серверный AI API и хранить ключ только на backend.
+Это учебная платформа-прототип. Для production-аккаунтов, PostgreSQL/Supabase и LLM AI Tutor нужны отдельные внешние сервисы и секреты; API-ключи нельзя размещать во frontend.
+
+## ULTRA features
+- Adaptive Learning: слабые зоны и персональная рекомендация
+- Daily Mission
+- Final Exam Mode with timer
+- SQL/Python Playground (safe validation demo)
+- Dataset Library
+- Skill Radar
+- Expanded project and lesson metadata
