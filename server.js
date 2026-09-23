@@ -38,7 +38,7 @@ const server=http.createServer(async(req,res)=>{
  try{
   const u=new URL(req.url||'/',`http://${req.headers.host||'localhost'}`);
   if(req.method==='OPTIONS'){res.writeHead(204,{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET,POST,DELETE,OPTIONS','Access-Control-Allow-Headers':'Content-Type'});return res.end()}
-  if(u.pathname==='/api/health')return json(res,200,{ok:true,app:'Analytics Academy',version:'10.0.0',accounts:true,storage:USE_SUPABASE?'supabase':'local-demo'});
+  if(u.pathname==='/api/health')return json(res,200,{ok:true,app:'Analytics Academy',version:'14.0.0',accounts:true,storage:USE_SUPABASE?'supabase':'local-demo'});
   if(u.pathname==='/api/auth/register'&&req.method==='POST'){
    if(limited(req,'register',6))return json(res,429,{ok:false,error:'RATE_LIMITED'});
    const x=await readBody(req),email=String(x.email||'').trim().toLowerCase(),name=String(x.name||'').trim(),password=String(x.password||'');
@@ -60,4 +60,4 @@ const server=http.createServer(async(req,res)=>{
   const rel=u.pathname==='/'?'index.html':decodeURIComponent(u.pathname.replace(/^\/+/,''));const file=path.resolve(ROOT,rel);if(file!==ROOT&&!file.startsWith(ROOT+path.sep))return send(res,403,'Forbidden','text/plain; charset=utf-8');fs.readFile(file,(err,data)=>{if(err)return send(res,404,'Not found','text/plain; charset=utf-8');send(res,200,data,types[path.extname(file).toLowerCase()]||'application/octet-stream')});
  }catch(e){console.error(e);json(res,e.status||500,{ok:false,error:e.message||'SERVER_ERROR'})}
 });
-server.listen(PORT,()=>console.log(`Analytics Academy v10 running on port ${PORT}; accounts=${USE_SUPABASE?'supabase':'local-demo'}`));
+server.listen(PORT,()=>console.log(`Analytics Academy v14 running on port ${PORT}; accounts=${USE_SUPABASE?'supabase':'local-demo'}`));

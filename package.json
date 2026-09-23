@@ -1,6 +1,6 @@
 {
   "name": "analytics-academy",
-  "version": "10.0.0",
+  "version": "14.0.0",
   "private": true,
   "description": "Russian-language Data Analytics learning platform with accounts, structured learning and cloud progress sync",
   "scripts": {"start":"node server.js"}

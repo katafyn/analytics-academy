@@ -1,4 +1,4 @@
-# Analytics Academy v10
+# Analytics Academy v14 — audited/fixed
 
 Русскоязычная платформа для подготовки к Data Analytics: 133 урока, 500 практических заданий, 12 проектов, экзамены, SQL/Python Playground, портфолио и University Ready.
 
@@ -40,3 +40,15 @@ Added a guided teacher system for practice, SQL and Python: progressive hints, c
 - Career Path: Data Analyst, Business Analyst, BI Analyst, Product Analyst, Marketing Analyst, Financial Analyst, Operations Analyst, Data Scientist.
 - Each career includes responsibilities, focus, tools, example task, typical workday, skills, and growth path.
 - Career selection is stored in the local learning state and can guide the learner toward the relevant course path.
+
+
+## v14 audit/fixes
+- Fixed safe restoration of local learning state if localStorage contains invalid JSON.
+- Fixed the Progress navigation route (`progress` → `progressPage`).
+- Added a visible runtime-error fallback instead of a completely blank application shell.
+- Synchronized server/package health version to 14.0.0.
+- Syntax-checked frontend JavaScript and server JavaScript.
+- Validated `data.json` and `package.json`.
+
+### Important for cross-device accounts
+The account API is implemented, but Render must have `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` configured for durable cloud storage. Without those variables, the app uses demo local file storage and progress may not persist across deployments/restarts.
