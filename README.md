@@ -1,32 +1,42 @@
-# Analytics Academy v6
+# Analytics Academy v10
 
-Финальный учебный контент для русскоязычной платформы Data Analytics.
+Русскоязычная платформа для подготовки к Data Analytics: 133 урока, 500 практических заданий, 12 проектов, экзамены, SQL/Python Playground, портфолио и University Ready.
 
-- 133 уроков с целями, теорией, примерами, типичными ошибками и мини-практикой
-- 500 практических заданий
-- 12 бизнес-проектов с реальными типами полей datasets
-- Excel, SQL, Python, Power BI, Statistics, Data Visualization, Business Analytics
-- Practice Lab, Interview Lab, Portfolio, University Ready
-- XP, достижения, прогресс, профиль и серверная синхронизация
+## Accounts & sync
+- Регистрация и вход по email + паролю.
+- Пароли хранятся только как scrypt-хеши.
+- Сессии используют HttpOnly cookie.
+- Прогресс синхронизируется через `/api/state`.
+- Для постоянного облачного хранения на Render подключите Supabase PostgreSQL.
 
-## Запуск
+## Supabase setup
+1. Создайте проект в Supabase.
+2. Откройте SQL Editor.
+3. Выполните `supabase_schema.sql`.
+4. В Render → Environment добавьте `SUPABASE_URL` и `SUPABASE_SERVICE_ROLE_KEY`.
+5. Redeploy сервис.
+
+Не публикуйте service-role key в GitHub или frontend.
+
+## Local fallback
+Если Supabase variables не заданы, приложение использует локальный `data.json` как demo storage. Для production на Render рекомендуется обязательно подключить Supabase, потому что локальная файловая система Render не является постоянным хранилищем.
+
+## Start
+```bash
+npm install
 npm start
+```
 
-## Важно
-Это учебная платформа-прототип. Для production-аккаунтов, PostgreSQL/Supabase и LLM AI Tutor нужны отдельные внешние сервисы и секреты; API-ключи нельзя размещать во frontend.
 
-## ULTRA features
-- Adaptive Learning: слабые зоны и персональная рекомендация
-- Daily Mission
-- Final Exam Mode with timer
-- SQL/Python Playground (safe validation demo)
-- Dataset Library
-- Skill Radar
-- Expanded project and lesson metadata
+## v11 — Teacher Mode
+Added a guided teacher system for practice, SQL and Python: progressive hints, concept-first prompts, and feedback that avoids revealing the answer after mistakes.
 
-## Stability fixes
-- Исправлена кнопка «Начать обучение» и сохранение учебного профиля.
-- Исправлены повторные попытки в Practice Lab.
-- Исправлена очистка таймера Exam Mode при переходе между разделами.
-- Исправлены безопасные inline-обработчики вариантов ответов.
-- Усилен контроль пути статических файлов на сервере.
+
+## v12 Teacher Mode
+Персональный учитель доступен на уроках, Practice Lab, Exam Mode и Playground. Он сохраняет историю ошибок по категориям и выдаёт ступенчатые подсказки без готового ответа.
+
+
+## v13 additions
+- Career Path: Data Analyst, Business Analyst, BI Analyst, Product Analyst, Marketing Analyst, Financial Analyst, Operations Analyst, Data Scientist.
+- Each career includes responsibilities, focus, tools, example task, typical workday, skills, and growth path.
+- Career selection is stored in the local learning state and can guide the learner toward the relevant course path.
